@@ -7,6 +7,10 @@ const blogSchema = mongoose.Schema({
     type: Number,
     default: 0,
   },
+  dislikes: {
+    type: Number,
+    default: 0,
+  },
   userId: mongoose.Schema.Types.ObjectId,
   createdAt: {
     type: Date,

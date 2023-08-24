@@ -43,7 +43,7 @@ blogRoutes.patch("/dislike-blog/:id", async (req, res) => {
 
     const updatedBlog = await blogModel.findOneAndUpdate(
       { _id },
-      { $inc: { likes: -1 } },
+      { $inc: { dislikes: 1 } },
       { new: true }
     );
 
