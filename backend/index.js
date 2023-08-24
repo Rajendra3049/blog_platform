@@ -4,7 +4,7 @@ const { connection } = require("./db");
 const { userRoutes } = require("./Routes/user.routes");
 const { blogRoutes } = require("./Routes/blog.routes");
 const corsOptions = {
-  origin: "https://blog-platform-virid.vercel.app/",
+  origin: "*",
   methods: "GET, POST, PUT, DELETE",
   allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
 };
