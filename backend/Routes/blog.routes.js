@@ -93,7 +93,11 @@ blogRoutes.patch("/blog/:id", userAuth, async (req, res) => {
         .send({ error: "Unauthorized to update this blog" });
     }
 
-    let updatedBlog = await blogModel.findByIdAndUpdate(_id, req.body);
+    const updatedBlog = await blogModel.findByIdAndUpdate(
+      _id,
+      { $set: req.body },
+      { new: true }
+    );
     res
       .status(200)
       .send({ msg: "Blog updated successfully", blog: updatedBlog });
