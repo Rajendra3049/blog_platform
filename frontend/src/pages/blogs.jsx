@@ -20,6 +20,7 @@ const BlogPage = () => {
   const { blogs, my_blogs, loading } = useSelector(
     (store) => store.blogManager
   );
+
   const { isAuth } = useSelector((store) => store.userManager);
   useEffect(() => {
     dispatch(getAllBlogs());
@@ -37,13 +38,19 @@ const BlogPage = () => {
       {(blogs.length || my_blogs.length) && !loading ? (
         <Box>
           {isAuth && (
-            <Button colorScheme="blue" onClick={() => {}} ml="100px" mt="5px">
+            <Button
+              colorScheme="blue"
+              onClick={() => {
+                navigate("/add-new-blogs");
+              }}
+              ml="100px"
+              mt="5px">
               Add New Blog
             </Button>
           )}
 
           <Box maxHeight="80vh" overflowY="auto">
-            {path === "" // Check the path and render accordingly
+            {path === ""
               ? blogs.map((post, index) => <BlogPost key={index} {...post} />)
               : path === "my-blogs" &&
                 my_blogs.map((post, index) => (

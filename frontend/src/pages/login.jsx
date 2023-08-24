@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -29,12 +29,17 @@ const LoginPage = () => {
   const handleLogin = () => {
     if (isLogin) {
       dispatch(userLogin({ email, password }));
-      navigate("/");
+      navigate("/my-blogs");
     } else {
       dispatch(userSignup({ name, email, password }));
       navigate("/login");
     }
   };
+  useEffect(() => {
+    if (isAuth) {
+      navigate("/my-blogs");
+    }
+  }, [isAuth]);
 
   return (
     <Box

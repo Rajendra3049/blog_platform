@@ -2,6 +2,7 @@ import {
   USER_ERROR,
   USER_LOADING,
   USER_LOGIN,
+  USER_LOGIN_ERROR,
   USER_LOGOUT,
   USER_SIGNUP,
 } from "./user.action-type";
@@ -23,10 +24,13 @@ export const userLogin =
         }
       );
       const data = await res.json();
-      if (data.token) {
+      console.log(data);
+      if (data.msg === "login successful") {
         localStorage.setItem("token", JSON.stringify(data.token));
+        dispatch({ type: USER_LOGIN });
+      } else {
+        dispatch({ type: USER_LOGIN_ERROR, payload: "wrong credentials" });
       }
-      dispatch({ type: USER_LOGIN });
     } catch (error) {
       dispatch({ type: USER_ERROR });
     }
@@ -60,5 +64,6 @@ export const userSignup =
   };
 
 export const userLogout = () => (dispatch) => {
+  localStorage.removeItem("token");
   dispatch({ type: USER_LOGOUT });
 };

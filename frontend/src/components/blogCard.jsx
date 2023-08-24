@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Flex,
@@ -9,8 +9,56 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { AiFillLike, AiFillDislike } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteBlog,
+  dislikeBlog,
+  likeBlog,
+  updateBlog,
+} from "../redux/blogs/blog.action";
+import UpdateBlogModal from "./updateBlog";
 
-const BlogPost = ({ title, content, image, likes, createdAt, path }) => {
+const BlogPost = ({
+  _id,
+  title,
+  content,
+  image,
+  likes,
+  dislikes,
+  createdAt,
+  path,
+}) => {
+  const dispatch = useDispatch();
+  const { blogs, my_blogs } = useSelector((store) => store.blogManager);
+  function handleLikes() {
+    dispatch(likeBlog({ _id, blogs, my_blogs }));
+  }
+  function handleDislikes() {
+    dispatch(dislikeBlog({ _id, blogs, my_blogs }));
+  }
+  function handleDelete() {
+    dispatch(deleteBlog({ _id, blogs, my_blogs }));
+  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleModalOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleUpdateSubmit = (formData) => {
+    dispatch(
+      updateBlog({
+        ...formData,
+        _id,
+        blogs,
+        my_blogs,
+      })
+    );
+  };
   return (
     <Box
       borderWidth="1px"
@@ -33,6 +81,7 @@ const BlogPost = ({ title, content, image, likes, createdAt, path }) => {
             aria-label="Like"
             size="sm"
             colorScheme="teal"
+            onClick={handleLikes}
           />
           <Text>{likes}</Text>
           <IconButton
@@ -40,7 +89,9 @@ const BlogPost = ({ title, content, image, likes, createdAt, path }) => {
             aria-label="Dislike"
             size="sm"
             colorScheme="red"
+            onClick={handleDislikes}
           />
+          <Text>{dislikes}</Text>
         </Stack>
         <Flex alignItems="center">
           <Text fontSize="sm" color="gray.500" mr="2">
@@ -48,10 +99,18 @@ const BlogPost = ({ title, content, image, likes, createdAt, path }) => {
           </Text>
           {path && path === "my-blogs" ? (
             <>
-              <Button size="sm" colorScheme="blue" variant="outline">
+              <Button size="sm" colorScheme="blue" onClick={handleModalOpen}>
                 Edit
               </Button>
-              <Button size="sm" colorScheme="red" ml="2">
+              <UpdateBlogModal
+                isOpen={isModalOpen}
+                onClose={handleModalClose}
+                onSubmit={handleUpdateSubmit}
+                title={title}
+                content={content}
+                image={image}
+              />
+              <Button size="sm" colorScheme="red" ml="2" onClick={handleDelete}>
                 Delete
               </Button>
             </>
