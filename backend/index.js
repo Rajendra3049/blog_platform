@@ -4,13 +4,13 @@ const { connection } = require("./db");
 const { userRoutes } = require("./Routes/user.routes");
 const { blogRoutes } = require("./Routes/blog.routes");
 const corsOptions = {
-  origin: "*",
+  origin: "https://blog-server-vzh9.onrender.com",
   methods: "GET, POST, PUT, DELETE",
   allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept",
 };
 
 const app = express();
-app.use(cors("*"));
+app.use(cors(corsOptions));
 app.use(express.json());
 
 app.get("/ping", (req, res) => {
